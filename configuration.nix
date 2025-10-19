@@ -88,6 +88,11 @@
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
+    # theme
+    adwaita-icon-theme
+    gtk3
+    gtk4
+
     # Core
     niri
     wayland
@@ -95,11 +100,14 @@
     xdg-desktop-portal-gtk
 
     # Terminal / launcher
-    alacritty
+    foot
     rofi-wayland
 
     # Barre et widgets
     waybar
+    xwayland-satellite
+    hyprland-protocols
+    lm_sensors
     swww            # pour le fond d’écran
     grim slurp      # screenshots (grim pour capturer, slurp pour sélectionner)
     brightnessctl
@@ -108,9 +116,8 @@
     # Outils
     git
     wget
-    foot
   ];
-
+  
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
