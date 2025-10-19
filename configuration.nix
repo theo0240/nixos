@@ -88,14 +88,27 @@
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    rofi-wayland
+    # Core
     niri
-    wget
-    foot
     wayland
     wl-clipboard
+    xdg-desktop-portal-gtk
+
+    # Terminal / launcher
+    alacritty
+    rofi-wayland
+
+    # Barre et widgets
+    waybar
+    swww            # pour le fond d’écran
+    grim slurp      # screenshots (grim pour capturer, slurp pour sélectionner)
     brightnessctl
+    pamixer         # pour contrôler le volume
+
+    # Outils
     git
+    wget
+    foot
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
