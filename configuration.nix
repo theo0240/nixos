@@ -39,12 +39,24 @@
     open = false;
   };
 
-  hardware.opengl.enable = true;
-  hardware.opengl.driSupport32Bit = true;
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
 
   services.displayManager.ly.enable = true;
   programs.niri.enable = true;
 
+  environment.sessionVariables = {
+    XDG_SESSION_TYPE = "wayland";
+    XDG_CURRENT_DESKTOP = "niri";
+    NIRI_WAYLAND = "1";
+    WLR_NO_HARWARE_CURSORS = "1";
+  };
+
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-emoji
+    pkgs.nerd-fonts.jetbrains-mono
+  ];
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -76,9 +88,8 @@
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    rofi
+    rofi-wayland
     niri
-    alacritty
     wget
     foot
     wayland
