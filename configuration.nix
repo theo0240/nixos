@@ -9,6 +9,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.kernelModules = [ "nct6775" ];
+
   networking.hostName = "TERRA";
   networking.networkmanager.enable = true;
 
@@ -29,8 +31,22 @@
   # Enable the X11 windowing system.
 
   nixpkgs.config.allowUnfree = true;
-  services.xserver.enable = false;
   services.xserver.videoDrivers = [ "nvidia" ];
+
+  programs.niri = { enable = true; };
+
+  services.xserver = {
+    enable = true;
+    
+    displayManager.gdm = {
+      enable = true;
+      wayland = true;
+    };
+    
+    xkb = {
+      layout = "us";
+    };
+  };
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -42,14 +58,17 @@
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
 
-  services.displayManager.ly.enable = true;
-  programs.niri.enable = true;
-
   environment.sessionVariables = {
     XDG_SESSION_TYPE = "wayland";
     XDG_CURRENT_DESKTOP = "niri";
     NIRI_WAYLAND = "1";
     WLR_NO_HARWARE_CURSORS = "1";
+  };
+
+  fileSystems."/mnt/game" = {
+    device = "/dev/disk/by-uuid/be89c907-06f5-42cc-9afb-3c0903bc0be1";
+    fsType = "ext4";
+    options = [ "defaults" ];
   };
 
   fonts.packages = with pkgs; [
@@ -84,40 +103,52 @@
   };
 
   programs.firefox.enable = true;
-
-  # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
-  environment.systemPackages = with pkgs; [
-    # theme
-    adwaita-icon-theme
-    gtk3
-    gtk4
-
-    # Core
-    niri
-    wayland
-    wl-clipboard
-    xdg-desktop-portal-gtk
-
-    # Terminal / launcher
-    foot
-    rofi-wayland
-
-    # Barre et widgets
-    waybar
-    xwayland-satellite
-    hyprland-protocols
-    lm_sensors
-    swww            # pour le fond d’écran
-    grim slurp      # screenshots (grim pour capturer, slurp pour sélectionner)
-    brightnessctl
-    pamixer         # pour contrôler le volume
-
-    # Outils
-    git
-    wget
-  ];
+  programs.gamemode.enable = true;
   
+  environment.systemPackages = with pkgs; [
+    # === outils utilisateur ===
+    rofi
+    discord
+    steam
+    lutris
+    gamemode
+    prismlauncher
+    heroic
+    fuzzel
+    ghostty
+    superfile
+
+    # === outils dev ===
+    vscode
+    rustup
+    gcc
+    python314
+
+    # === outils système ===
+    util-linux
+    coreutils
+    gawk
+    bash
+    niri
+    xwayland-satellite
+    xdg-desktop-portal
+    xdg-desktop-portal-wlr
+    xdg-desktop-portal-gtk
+    mako
+    pipewire
+    wireplumber
+
+    # === Réseau ===
+    iproute2
+    nettools
+    curl
+
+    # === Divers utilitaires pratiques ===
+    htop
+    lshw
+    swaybg
+  ];
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
