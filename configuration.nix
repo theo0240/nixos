@@ -95,11 +95,16 @@
   users.users.guliman = {
     isNormalUser = true;
     description = "Utilisateur Principal";
-    extraGroups = [ "wheel" "video" ];
+    extraGroups = [ "wheel" "video" "gamemode" ];
     shell = pkgs.bash;
     packages = with pkgs; [
       tree
     ];
+  };
+  
+  programs.gamemode.settings.general = {
+    desiredgov = "schedutil";
+    defaultgov = "performance";
   };
 
   programs.firefox.enable = true;
@@ -107,6 +112,7 @@
   
   environment.systemPackages = with pkgs; [
     # === outils utilisateur ===
+    git
     rofi
     discord
     steam
@@ -117,6 +123,9 @@
     fuzzel
     ghostty
     superfile
+    meson
+    ninja
+    cmake
 
     # === outils dev ===
     vscode
@@ -129,6 +138,8 @@
     coreutils
     gawk
     bash
+    pkg-config 
+    systemd
     niri
     xwayland-satellite
     xdg-desktop-portal
